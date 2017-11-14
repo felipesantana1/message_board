@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Message Board</title>
+</head>
+</html>
+    <body>
+        <fieldset>
+        <legend><h1>Welcome to the Dojo Message Board!</h1></legend>
+            <form action="/messages" method="post">
+                Name:<input type="text" name="name">
+                Message:<textarea name="message" cols="30" rows="8"></textarea>
+                <input type="submit" value="Post Message">
+            </form>
+            <ul>
+            <% if(message_errors){ %>
+                <% for(let x in message_errors){ %>
+                    <li><%= message_errors[x].message %></li>
+            <% } %>
+        <% } %>
+            </ul>
+        </fieldset>
+        <h2>Messages!</h2>
+        <% if(typeof(messages) != 'undefined' ) { %>
+            <% for(let i = messages.length-1; i >= 0; i--){ %>
+            <b>Name:</b><p><%= messages[i].name %></p>
+            <b>Message:</b><p><%= messages[i].message %></p>
+            <h3>Comments:</h3>
+                <% for(let j = 0; j < messages[i].comments.length; j++){ %>
+                    <b>Name:</b><p><%= messages[i].comments[j].name %></p>
+                    <b>Message:</b><p><%= messages[i].comments[j].comment %></p>
+                <% } %>
+                    <fieldset>
+                    <legend>Post Comment!</legend>
+                        <form action="/messages/<%= messages[i]._id %>" method="post">
+                            Name:<input type="text" name="name">
+                            Comment:<textarea name="comment" cols="30" rows="8"></textarea>
+                            <input type="submit" value="Post Comment">
+                        </form>
+                        <ul>
+                                <% if(message_errors){ %>
+                                    <% for(let x in message_errors){ %>
+                                        <li><%= message_errors[x].message %></li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                </fieldset>    
+            <% } %>
+        <% } %>
+    </body>
+</html>
